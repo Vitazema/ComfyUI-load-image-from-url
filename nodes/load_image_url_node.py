@@ -4,7 +4,9 @@ import requests
 from io import BytesIO
 import os
 import numpy as np
+import urllib3
 
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def pil2tensor(img):
     output_images = []
@@ -37,7 +39,7 @@ def pil2tensor(img):
 def load_image(image_source):
     if image_source.startswith('http'):
         print(image_source)
-        response = requests.get(image_source)
+        response = requests.get(image_source, verify=False)
         img = Image.open(BytesIO(response.content))
         file_name = image_source.split('/')[-1]
     else:
